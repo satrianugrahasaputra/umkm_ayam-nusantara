@@ -18,6 +18,8 @@ foreach ($storagePaths as $path) {
 
 // Bind Vercel specific paths to application
 putenv('APP_STORAGE=/tmp/storage');
+$_ENV['APP_STORAGE'] = '/tmp/storage';
+$_SERVER['APP_STORAGE'] = '/tmp/storage';
 
 // Forward Vercel serverless requests to Laravel's public entrypoint
 require __DIR__ . '/../public/index.php';
