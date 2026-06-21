@@ -44,8 +44,8 @@ Build database tables and seed sample menus, reviews, settings, and the default 
 php artisan migrate --seed
 ```
 * **Default Admin Account**:
-  - **Email**: `admin@ayamnusantara.com`
-  - **Password**: `password123`
+  - **Email**: `jika butuh bisa hubungi`
+  - **Password**: `jika butuh bisa hubungi`
 
 ### 4. Create Public Storage Symlink
 ```bash
