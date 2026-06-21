@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Vercel read-only filesystem workaround - redirect storage paths to /tmp
 $storagePaths = [
     '/tmp/storage/app/public',
@@ -8,6 +12,7 @@ $storagePaths = [
     '/tmp/storage/framework/testing',
     '/tmp/storage/framework/views',
     '/tmp/storage/logs',
+    '/tmp/storage/bootstrap/cache',
 ];
 
 foreach ($storagePaths as $path) {
@@ -16,10 +21,24 @@ foreach ($storagePaths as $path) {
     }
 }
 
-// Bind Vercel specific paths to application
+// Bind Vercel specific storage path
 putenv('APP_STORAGE=/tmp/storage');
 $_ENV['APP_STORAGE'] = '/tmp/storage';
 $_SERVER['APP_STORAGE'] = '/tmp/storage';
+
+// Redirect Laravel bootstrap cache to writable /tmp directory
+$cacheFiles = [
+    'APP_SERVICES_CACHE' => '/tmp/storage/bootstrap/cache/services.php',
+    'APP_PACKAGES_CACHE' => '/tmp/storage/bootstrap/cache/packages.php',
+    'APP_CONFIG_CACHE' => '/tmp/storage/bootstrap/cache/config.php',
+    'APP_ROUTES_CACHE' => '/tmp/storage/bootstrap/cache/routes.php',
+];
+
+foreach ($cacheFiles as $key => $val) {
+    putenv("{$key}={$val}");
+    $_ENV[$key] = $val;
+    $_SERVER[$key] = $val;
+}
 
 // Forward Vercel serverless requests to Laravel's public entrypoint
 try {
